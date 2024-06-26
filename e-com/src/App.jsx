@@ -40,12 +40,12 @@ function App() {
       <Navbars user={user} handleLogout={handleLogout}/>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/seller" element={<Seller />} /> */}
+        <Route path="/seller" element={<Seller />} />
 
         <Route
           path="/signin"
           element={user ? (
-            user.role === 'seller' ? <Seller /> : <Navigate to="/" />
+            user.role === 'seller' ? <Navigate to="/seller" /> : <Navigate to="/" />
           ) : (
             <Signin setUser={setUser} />
           )}

@@ -15,11 +15,7 @@ app.use(cors());
 
 // MongoDB connection
 const dbURI = 'mongodb+srv://paragagarwal0589:parag@ecom.g1z5xel.mongodb.net/?retryWrites=true&w=majority&appName=ecom';
-mongoose.connect(dbURI, {
-    // These options are no longer needed in Mongoose 6+
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(dbURI).then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
     console.error('Error connecting to MongoDB:', err);
@@ -29,14 +25,23 @@ mongoose.connect(dbURI, {
 const UserSchema = new mongoose.Schema({
     username: { type: String, unique: true },
     password: String,
-    role:String
+    role: String
 });
 
 const User = mongoose.model('User', UserSchema);
 
+// Product schema and model
+const ProductSchema = new mongoose.Schema({
+    productname: String,
+    productdescription: String,
+    price: Number
+});
+
+const Product = mongoose.model('Product', ProductSchema);
+
 // Signup route
 app.post('/signup', async (req, res) => {
-    const { usernames, passwords,role } = req.body;
+    const { usernames, passwords, role } = req.body;
     let username = usernames;
     let password = passwords;
 
@@ -63,6 +68,67 @@ app.post('/signup', async (req, res) => {
     res.status(201).json({ msg: 'User created successfully' });
 });
 
+// Create Product route
+app.post('/createProduct', async (req, res) => {
+    const { productname, productdescription, price } = req.body;
+
+    if (!productname || !productdescription || !price) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    const productExists = await Product.findOne({ productname });
+
+    if (productExists) {
+        return res.status(400).json({ msg: 'Product already exists' });
+    }
+
+    const newProduct = new Product({
+        productname,
+        productdescription,
+        price
+    });
+
+    await newProduct.save();
+
+    res.status(201).json({ msg: 'Product created successfully' });
+});
+
+// Fetch all products route
+app.get('/products', async (req, res) => {
+    try {
+      const products = await Product.find();
+      res.json(products);
+    } catch (error) {
+      res.status(500).json({ msg: 'Error fetching products' });
+    }
+  });
+  
+  // Update product route
+  app.put('/products/:id', async (req, res) => {
+    const { id } = req.params;
+    const { productname, productdescription, price } = req.body;
+    
+    try {
+      await Product.findByIdAndUpdate(id, { productname, productdescription, price });
+      res.status(200).json({ msg: 'Product updated successfully' });
+    } catch (error) {
+      res.status(500).json({ msg: 'Error updating product' });
+    }
+  });
+  
+  // Delete product route
+  app.delete('/products/:id', async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+      await Product.findByIdAndDelete(id);
+      res.status(200).json({ msg: 'Product deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ msg: 'Error deleting product' });
+    }
+  });
+  
+
 // Signin route
 app.post('/signin', async (req, res) => {
     const { username, password } = req.body;
@@ -85,7 +151,7 @@ app.post('/signin', async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user._id, username: user.username, role:user.role } });
+    res.json({ token, user: { id: user._id, username: user.username, role: user.role } });
 });
 
 // Middleware to verify token
