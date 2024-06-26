@@ -8,6 +8,7 @@ const Navbars = ({ user, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
+  console.log(user);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };

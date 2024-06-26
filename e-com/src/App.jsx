@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Signin from './components/Signin';
 import Cart from './components/Cart';
+import Home from './components/Home';
+import Seller from './components/Seller';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,32 +33,36 @@ function App() {
     localStorage.removeItem('token');
     setUser(null);
   };
+  
 
   return (
     <div>
       <Navbars user={user} handleLogout={handleLogout}/>
-      <h1>home page</h1>
-
-      
       <Routes>
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/seller" element={<Seller />} /> */}
+
         <Route
           path="/signin"
-          element={user ? <Navigate to="/cart" /> : <Signin setUser={setUser} />}
+          element={user ? (
+            user.role === 'seller' ? <Seller /> : <Navigate to="/" />
+          ) : (
+            <Signin setUser={setUser} />
+          )}
         />
+
         <Route
           path="/cart"
-          element={
-            user ? (
-              <div>
-                <h1>Hello, {user.username}!</h1>
-                <button onClick={handleLogout}>Logout</button>
-                <Cart />
-              </div>
-            ) : (
-              <Navigate to="/signin" />
-            )
-          }
+          element={user ? (
+            user.role === 'user' ? <Cart /> : <Seller />
+          ) : (
+            <Navigate to="/signin"/>
+          )}
         />
+        {/* <Route
+          path="/cart"
+          element={user ? <Cart /> : <Navigate to="/signin" />}
+        /> */}
       </Routes>
     </div>
   );

@@ -20,11 +20,12 @@ function Signin({ setUser }) {
 
   const [usernames, setUsernames] = useState("");
   const [passwords, setPasswords] = useState("");
+  const [role, setRole] = useState("user"); // Default role to user
 
   const handleSubmit2 = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/signup", { usernames, passwords })
+      .post("http://localhost:5000/signup", { usernames, passwords, role })
       .then((response) => alert(response.data.msg))
       .catch((error) => alert(error.response.data.msg));
   };
@@ -42,29 +43,30 @@ function Signin({ setUser }) {
             <CardHeader>
               <CardTitle>Sign in</CardTitle>
             </CardHeader>
-            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-              <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <form onSubmit={handleSubmit} class="space-y-4 md:space-y-6">
+            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                   <div>
                     <label
-                      for="email"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Username</label>
+                      Username
+                    </label>
                     <input
                       type="text"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="Username"
                       required
-                      class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
 
                   <div>
                     <label
-                      for="password"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="password"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Password
                     </label>
@@ -74,13 +76,13 @@ function Signin({ setUser }) {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       placeholder="••••••••"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    class="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                   >
                     Sign in
                   </button>
@@ -96,29 +98,49 @@ function Signin({ setUser }) {
               <CardTitle>Sign up</CardTitle>
             </CardHeader>
 
-            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-              <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <form onSubmit={handleSubmit2} class="space-y-4 md:space-y-6">
+            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <form onSubmit={handleSubmit2} className="space-y-4 md:space-y-6">
                   <div>
                     <label
-                      for="username"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="username"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Username                    </label>
+                      Username
+                    </label>
                     <input
                       type="text"
                       value={usernames}
                       onChange={(e) => setUsernames(e.target.value)}
                       placeholder="Username"
                       required
-                      class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
+                  </div>
+
+                  
+                  <div>
+                    <label
+                      htmlFor="role"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Role
+                    </label>
+                    <select
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required
+                    >
+                      <option value="user">User</option>
+                      <option value="seller">Seller</option>
+                    </select>
                   </div>
 
                   <div>
                     <label
-                      for="password"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="password"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Password
                     </label>
@@ -128,13 +150,14 @@ function Signin({ setUser }) {
                       onChange={(e) => setPasswords(e.target.value)}
                       required
                       placeholder="••••••••"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
 
+
                   <button
                     type="submit"
-                    class="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                   >
                     Sign up
                   </button>

@@ -28,14 +28,15 @@ mongoose.connect(dbURI, {
 // User schema and model
 const UserSchema = new mongoose.Schema({
     username: { type: String, unique: true },
-    password: String
+    password: String,
+    role:String
 });
 
 const User = mongoose.model('User', UserSchema);
 
 // Signup route
 app.post('/signup', async (req, res) => {
-    const { usernames, passwords } = req.body;
+    const { usernames, passwords,role } = req.body;
     let username = usernames;
     let password = passwords;
 
@@ -53,7 +54,8 @@ app.post('/signup', async (req, res) => {
 
     const newUser = new User({
         username,
-        password: hashedPassword
+        password: hashedPassword,
+        role
     });
 
     await newUser.save();
@@ -83,7 +85,7 @@ app.post('/signin', async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user._id, username: user.username } });
+    res.json({ token, user: { id: user._id, username: user.username, role:user.role } });
 });
 
 // Middleware to verify token
