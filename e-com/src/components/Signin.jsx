@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 function Signin({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -118,7 +120,6 @@ function Signin({ setUser }) {
                     />
                   </div>
 
-                  
                   <div>
                     <label
                       htmlFor="role"
@@ -154,9 +155,9 @@ function Signin({ setUser }) {
                     />
                   </div>
 
-
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSubmit2}
                     className="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                   >
                     Sign up

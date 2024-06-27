@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes');
+// const cartRoutes = require('./routes/cart')
 
 const app = express();
 const PORT = 5000;
@@ -19,6 +20,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Routes
 app.use('/', routes);
+// app.use('/cart', cartRoutes); 
 
 // Start server
 app.listen(PORT, () => {

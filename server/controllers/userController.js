@@ -5,7 +5,9 @@ const User = require('../models/user');
 const JWT_SECRET = 'your_jwt_secret_key';
 
 const signup = async (req, res) => {
-    const { username, password, role } = req.body;
+    const { usernames, passwords, role } = req.body;
+    let username =  usernames;
+    let password = passwords;
 
     if (!username || !password) {
         return res.status(400).json({ msg: 'Please enter all fields' });
