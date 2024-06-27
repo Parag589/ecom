@@ -29,7 +29,7 @@ const createProduct = async (req, res) => {
     }
 };
 
-const getProducts = async (req, res) => {
+const getSellerProducts = async (req, res) => {
     try {
         const products = await Product.find();
         res.json(products);
@@ -38,6 +38,31 @@ const getProducts = async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
+const getProducts = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Parse page from query parameter, default to 1
+    const limit = 8; // Number of products per page
+
+    const skip = (page - 1) * limit; // Calculate how many documents to skip
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    const products = await Product.find()
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      products,
+      currentPage: page,
+      totalPages
+    });
+  } catch (error) {
+    console.error('Error in getProducts:', error);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
 
 const updateProduct = async (req, res) => {
     const { id } = req.params;
@@ -68,5 +93,6 @@ module.exports = {
     createProduct,
     getProducts,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getSellerProducts
 };

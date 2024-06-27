@@ -54,7 +54,7 @@ function App() {
         <Route
           path="/cart"
           element={user ? (
-            user.role === 'user' ? <Cart /> : <Seller />
+            user.role === 'user' ? <Cart user={user} /> : <Seller />
           ) : (
             <Navigate to="/signin"/>
           )}
