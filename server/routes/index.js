@@ -23,7 +23,7 @@ router.post('/signup', userController.signup);
 router.post('/signin', userController.signin);
 router.get('/user', auth, userController.getUser);
 router.post('/forgot-password', userController.forgotPassword);
-router.post('/reset-password/:token', userController.resetPassword);
+// router.post('/reset-password/:token', userController.resetPassword);
 
 
 // Product routes
