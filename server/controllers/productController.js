@@ -1,33 +1,52 @@
 const Product = require('../models/Product');
+const cloudinary = require('cloudinary').v2;
+
 
 const createProduct = async (req, res) => {
-    const { productname, productdescription, price } = req.body;
-
-    if (!productname || !productdescription || !price) {
-        return res.status(400).json({ msg: 'Please enter all fields' });
-    }
-
     try {
-        const productExists = await Product.findOne({ productname });
-
-        if (productExists) {
-            return res.status(400).json({ msg: 'Product already exists' });
+      console.log(req.files);
+      const file = req.files.photo;
+  
+      // Upload image to Cloudinary
+      cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+        if (err) {
+          console.error('Error uploading image:', err);
+          return res.status(500).json({ msg: 'Error uploading image' });
         }
-
-        const newProduct = new Product({
+  
+        const { productname, productdescription, price } = req.body;
+  
+        if (!productname || !productdescription || !price) {
+          return res.status(400).json({ msg: 'Please enter all fields' });
+        }
+  
+        try {
+          const productExists = await Product.findOne({ productname });
+  
+          if (productExists) {
+            return res.status(400).json({ msg: 'Product already exists' });
+          }
+  
+          const newProduct = new Product({
             productname,
             productdescription,
-            price
-        });
-
-        await newProduct.save();
-
-        res.status(201).json({ msg: 'Product created successfully' });
+            price,
+            imagePath: result.url
+          });
+  
+          await newProduct.save();
+  
+          return res.status(201).json({ msg: 'Product created successfully' });
+        } catch (error) {
+          console.error('Error in createProduct:', error);
+          return res.status(500).json({ msg: 'Server error' });
+        }
+      });
     } catch (error) {
-        console.error('Error in createProduct:', error);
-        res.status(500).json({ msg: 'Server error' });
+      console.error('Error in imageController:', error);
+      return res.status(500).json({ msg: 'Server error' });
     }
-};
+  };
 
 const getSellerProducts = async (req, res) => {
     try {
@@ -69,7 +88,20 @@ const updateProduct = async (req, res) => {
     const { productname, productdescription, price } = req.body;
 
     try {
-        await Product.findByIdAndUpdate(id, { productname, productdescription, price });
+        let updateFields = { productname, productdescription, price };
+
+        // Check if a new image is being uploaded
+        if (req.files && req.files.photo) {
+            const file = req.files.photo;
+            
+            // Upload new image to Cloudinary
+            const result = await cloudinary.uploader.upload(file.tempFilePath);
+            
+            // Add imagePath to updateFields
+            updateFields.imagePath = result.url;
+        }
+
+        await Product.findByIdAndUpdate(id, updateFields, { new: true });
         res.status(200).json({ msg: 'Product updated successfully' });
     } catch (error) {
         console.error('Error in updateProduct:', error);

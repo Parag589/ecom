@@ -21,7 +21,8 @@ const ProductSchema = new mongoose.Schema({
   productname: String,
   productprice: Number,
   productquantity: Number,
-  amountpayable: Number
+  amountpayable: Number,
+  imagePath: String
 });
 
 const CartSchema = new mongoose.Schema({

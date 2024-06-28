@@ -1,16 +1,34 @@
-import React, { useState } from "react";
-import { Collapse, Dropdown, initTWE } from "tw-elements";
-import logo from "./logo.png";
+import React, { useState, useEffect } from "react";
+import axios from 'axios'; // Import axios for making HTTP requests
 import { Link, useNavigate } from 'react-router-dom';
-initTWE({ Collapse, Dropdown });
+import { initTWE } from "tw-elements";
+import logo from "./logo.png";
+
+
+initTWE(); // Initialize TWE without passing any components
 
 const Navbars = ({ user, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
 
-  console.log(user);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  useEffect(() => {
+    if (user) {
+      console.log("Fetching cart items for user:", user._id);
+      fetchCartItems();
+    }
+  }, [user]);
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/cart/${user._id}`);
+      setCartItems(response.data.products); // Assuming products are nested within 'products' key in the response
+    } catch (err) {
+      console.error("Error fetching cart items:", err.message);
+    }
   };
 
   return (
@@ -102,7 +120,9 @@ const Navbars = ({ user, handleLogout }) => {
                 >
                   <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
                 </svg>
+                <span className="absolute Pl-7 flex h-4 w-4 items-center justify-center rounded-full border bg-white text-sm font-medium text-gray-500 shadow sm:-top-2 sm:-right-2">{cartItems.reduce((total, item) => total + item.productquantity, 0)}</span>
               </span>
+                 
             </Link>
 
           </div>

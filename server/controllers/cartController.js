@@ -1,7 +1,7 @@
 const Cart = require('../models/Cart');
 
 exports.addToCart = async (req, res) => {
-    const { userid, productid, productname, productprice, productquantity } = req.body;
+    const { userid, productid, productname, productprice, productquantity,imagePath } = req.body;
 
     try {
       // Find the user's cart
@@ -22,7 +22,8 @@ exports.addToCart = async (req, res) => {
             productname,
             productprice,
             productquantity,
-            amountpayable: productprice * productquantity
+            amountpayable: productprice * productquantity,
+            imagePath
           };
           cart.products.push(newProduct);
         }
@@ -38,7 +39,9 @@ exports.addToCart = async (req, res) => {
             productname,
             productprice,
             productquantity,
-            amountpayable: productprice * productquantity
+            amountpayable: productprice * productquantity,
+            imagePath
+
           }]
         });
         await newCart.save();

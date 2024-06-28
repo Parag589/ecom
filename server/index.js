@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes');
+const fileUpload = require('express-fileupload')
 // const cartRoutes = require('./routes/cart')
 
 const app = express();
@@ -12,6 +13,9 @@ const dbURI = 'mongodb+srv://paragagarwal0589:parag@ecom.g1z5xel.mongodb.net/?re
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+app.use(fileUpload({    
+    useTempFiles: true
+    }));
 
 // Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
