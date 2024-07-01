@@ -31,10 +31,25 @@ export const poApi = createApi({
       }),
     }),
   })
+
+  export const cartItems = createApi({
+    reducerPath: 'cartItems',
+    baseQuery: fetchBaseQuery({ baseUrl: baseUri }),
+    endpoints: (builder) => ({
+      getCartItems: builder.query({
+        query: (id) => ({
+            url: `cart/${id}`,
+            method: 'GET'
+        })
+      }),
+    }),
+  })
   // Export hooks for usage in functional components, which are
   // auto-generated based on the defined endpoints
   export const { useGetAllDataQuery } = poApi
   export const { useGetHomeDataQuery } = homeApi
+  export const { useGetCartItemsQuery } = cartItems
+
 
 
   

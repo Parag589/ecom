@@ -3,30 +3,47 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useGetCartItemsQuery } from "../services/post";
+
 
 const Cart = ({ user }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (user) {
-      console.log("Fetching cart items for user:", user._id);
-      fetchCartItems();
-    }
-  }, [user]);
+  const {data, err, isLoading} = useGetCartItemsQuery(user._id)
+  console.log("CARTredux:", cartItems);
 
-  const fetchCartItems = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/cart/${user._id}`);
-      setCartItems(response.data.products); // Assuming products are nested within 'products' key in the response
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("Fetching cart items for user:", user._id);
+  //     fetchCartItems();
+  //   }
+  // }, [user]);
+
+  useEffect(() => {
+    if (isLoading) {
+      setLoading(true);
+    } else if (error) {
+      setError("Error fetching cart items");
       setLoading(false);
-    } catch (err) {
-      console.error("Error fetching cart items:", err.message);
-      setError(err.message);
+    } else if (data) {
+      setCartItems(data.products || []);
       setLoading(false);
     }
-  };
+  }, [data, error, isLoading]);
+
+  // const fetchCartItems = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:5000/cart/${user._id}`);
+  //     setCartItems(response.data.products); // Assuming products are nested within 'products' key in the response
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.error("Error fetching cart items:", err.message);
+  //     setError(err.message);
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleQuantityChange = async (productId, quantity) => {
     if (quantity < 1) return; // Ensure quantity doesn't go below 1
