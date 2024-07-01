@@ -3,6 +3,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useGetSellerProductsQuery } from "../services/post";
+
 
 const Seller = () => {
   const [productname, setProductname] = useState("");
@@ -12,19 +14,31 @@ const Seller = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [photo, setPhoto] = useState(null);
 
-  // Fetch products when the component mounts
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const {data, error, isLoading} = useGetSellerProductsQuery()
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/sellerProducts");
-      setProducts(response.data);
-    } catch (error) {
+
+  // Fetch products when the component mounts
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
+
+  useEffect(() => {
+    if (data) {
+      setProducts(data);
+      // setTotalPages(data.totalPages); 
+    }else{
       console.error("Error fetching products:", error);
     }
-  };
+  }, [data]);
+
+  // const fetchProducts = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/sellerProducts");
+  //     setProducts(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

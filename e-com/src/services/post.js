@@ -44,11 +44,30 @@ export const poApi = createApi({
       }),
     }),
   })
+
+  export const sellerProductsApi = createApi({
+    reducerPath: 'sellerProductsApi',
+    baseQuery: fetchBaseQuery({ baseUrl:baseUri }),
+    endpoints: (builder) => ({
+      getSellerProducts: builder.query({
+        query: () => ({
+          url: 'sellerProducts',
+          method: 'GET',
+        }),
+      }),
+    }),
+  });
+  
+
+
+
   // Export hooks for usage in functional components, which are
   // auto-generated based on the defined endpoints
   export const { useGetAllDataQuery } = poApi
   export const { useGetHomeDataQuery } = homeApi
   export const { useGetCartItemsQuery } = cartItems
+  export const { useGetSellerProductsQuery } = sellerProductsApi;
+
 
 
 

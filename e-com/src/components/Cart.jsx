@@ -14,13 +14,6 @@ const Cart = ({ user }) => {
   const {data, err, isLoading} = useGetCartItemsQuery(user._id)
   console.log("CARTredux:", cartItems);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log("Fetching cart items for user:", user._id);
-  //     fetchCartItems();
-  //   }
-  // }, [user]);
-
   useEffect(() => {
     if (isLoading) {
       setLoading(true);
@@ -32,18 +25,6 @@ const Cart = ({ user }) => {
       setLoading(false);
     }
   }, [data, error, isLoading]);
-
-  // const fetchCartItems = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:5000/cart/${user._id}`);
-  //     setCartItems(response.data.products); // Assuming products are nested within 'products' key in the response
-  //     setLoading(false);
-  //   } catch (err) {
-  //     console.error("Error fetching cart items:", err.message);
-  //     setError(err.message);
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleQuantityChange = async (productId, quantity) => {
     if (quantity < 1) return; // Ensure quantity doesn't go below 1
