@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useGetAllDataQuery, useGetHomeDataQuery } from "../services/post";
+
 
 const Home = ({ user }) => {
   const [products, setProducts] = useState([]);
@@ -11,45 +13,61 @@ const Home = ({ user }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // State to hold the selected product details
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const navigate = useNavigate(); 
 
-  // Fetch products when the component mounts and on page change
+  
+  
+  
+  const {data, error, isLoading} = useGetHomeDataQuery(currentPage)
+  console.log("redux:", data?.products);
+  console.log("redux:", data?.totalPages);
+
+
   useEffect(() => {
-    fetchProducts(currentPage);
-  }, [currentPage]);
-
-
-  const fetchProducts = async (page) => {
-    try {
-      const response = await axios.get(`http://localhost:5000/products?page=${page}`);
-      setProducts(response.data.products);
-      setTotalPages(response.data.totalPages);
-    } catch (error) {
-      console.error("Error fetching products:", error);
+    if (data) {
+      setProducts(data.products);
+      setTotalPages(data.totalPages); 
     }
-  };
+  }, [data]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const addToCart = async (product) => {
     if (!user) {
       // Redirect to signin page if user is null
       navigate("/signin");
       return;
+    } 
+  
+    if (user.role === "seller") {
+      toast.info("Please login with a user account!");
+      return;
     }
-    try {
-      const response = await axios.post("http://localhost:5000/addToCart", {
-        userid: user._id,
-        productid: product._id,
-        productname: product.productname,
-        productprice: product.price,
-        productquantity: 1, // Default quantity
-        imagePath: product.imagePath,
-      });
-      console.log(response.data.msg);
-      toast.success("Product added to cart!");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+  
+    if (user.role === "user") {
+      try {
+        const response = await axios.post("http://localhost:5000/addToCart", {
+          userid: user._id,
+          productid: product._id,
+          productname: product.productname,
+          productprice: product.price,
+          productquantity: 1, // Default quantity
+          imagePath: product.imagePath,
+        });
+        console.log(response.data.msg);
+        toast.success("Product added to cart!");
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      }
     }
   };
+  
 
   const openPopup = (product) => {
     setSelectedProduct(product);

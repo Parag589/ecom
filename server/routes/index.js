@@ -16,23 +16,21 @@ const cloudinary = require('cloudinary').v2;
 });
 
 
-router.post('/image', imageController);
 
 // User routes
 router.post('/signup', userController.signup);
 router.post('/signin', userController.signin);
 router.get('/user', auth, userController.getUser);
 router.post('/forgot-password', userController.forgotPassword);
-// router.post('/reset-password/:token', userController.resetPassword);
 
 
 // Product routes
 router.post('/createProduct', productController.createProduct);
 router.get('/products', productController.getProducts);
 router.get('/sellerProducts', productController.getSellerProducts);
-
 router.put('/products/:id', productController.updateProduct);
 router.delete('/products/:id', productController.deleteProduct);
+router.post('/image', imageController);
 
 //Cart routes
 router.post('/addToCart', addToCart);

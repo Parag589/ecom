@@ -3,6 +3,7 @@ import axios from 'axios'; // Import axios for making HTTP requests
 import { Link, useNavigate } from 'react-router-dom';
 import { initTWE } from "tw-elements";
 import logo from "./logo.png";
+import { FaCartShopping, FaBoxOpen  } from "react-icons/fa6";
 
 
 initTWE(); // Initialize TWE without passing any components
@@ -103,7 +104,10 @@ const Navbars = ({ user, handleLogout }) => {
                     <li className="mr">
                       <button
                       className="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
-                      onClick={handleLogout}
+                      onClick={() => {
+                        handleLogout();
+                        setIsDropdownOpen(!isDropdownOpen);
+                      }}
                       >log out</button>
                     </li>
                   </ul>
@@ -111,19 +115,25 @@ const Navbars = ({ user, handleLogout }) => {
               </div>
             )}
 
-            <Link to="/cart" className="me-4 text-neutral-600 dark:text-white">
-              <span className="[&>svg]:w-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-                </svg>
-                <span className="absolute Pl-7 flex h-4 w-4 items-center justify-center rounded-full border bg-white text-sm font-medium text-gray-500 shadow sm:-top-2 sm:-right-2">{cartItems.reduce((total, item) => total + item.productquantity, 0)}</span>
-              </span>
-                 
-            </Link>
+            {user && user.role === "seller" ? (
+               <Link to="/seller" className="me-4 text-neutral-600 dark:text-white">
+               <span className="[&>svg]:w-5">
+               <FaBoxOpen />
+                 {/* <span className="absolute Pl-7 flex h-4 w-4 items-center justify-center rounded-full border bg-white text-sm font-medium text-gray-500 shadow sm:-top-2 sm:-right-2">{cartItems.reduce((total, item) => total + item.productquantity, 0)}</span> */}
+               </span>
+                  
+             </Link>
+            ):(
+              <Link to="/cart" className="me-4 text-neutral-600 dark:text-white">
+               <span className="[&>svg]:w-5">
+               <FaCartShopping />
+                 <span className="absolute Pl-7 flex h-4 w-4 items-center justify-center rounded-full border bg-white text-sm font-medium text-gray-500 shadow sm:-top-2 sm:-right-2">{cartItems.reduce((total, item) => total + item.productquantity, 0)}</span>
+               </span>
+                  
+             </Link>
+            )}
+
+           
 
           </div>
         </div>

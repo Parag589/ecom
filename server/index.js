@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes');
 const fileUpload = require('express-fileupload')
-// const cartRoutes = require('./routes/cart')
 
 const app = express();
 const PORT = 5000;
@@ -24,7 +23,6 @@ mongoose.connect(dbURI)
 
 // Routes
 app.use('/', routes);
-// app.use('/cart', cartRoutes); 
 
 // Start server
 app.listen(PORT, () => {
