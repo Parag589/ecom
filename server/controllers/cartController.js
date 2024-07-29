@@ -34,13 +34,14 @@ exports.addToCart = async (req, res) => {
         // If the cart does not exist, create a new cart
         const newCart = new Cart({
           userid,
+          productid,
           products: [{
             productid,
-            productname,
-            productprice,
+            // productname,
+            // productprice,
             productquantity,
             amountpayable: productprice * productquantity,
-            imagePath
+            // imagePath
 
           }]
         });

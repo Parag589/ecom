@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { useGetHomeDataQuery } from "../services/post";
+import { useGetHomeDataQuery, useAddToCartMutation } from "../services/post";
 
 
 const Home = ({ user }) => {
@@ -90,6 +90,8 @@ const Home = ({ user }) => {
             key={product._id}
             className="relative m-10 flex w-auto max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
           >
+              <div class="bg-green-100 text-gray-800 px-2 py-1 rounded-full w-24">10% off</div>
+              
             <a
               className="relative mx-3 mt-3 flex h-48 overflow-hidden rounded-xl"
               href="#"
@@ -109,9 +111,15 @@ const Home = ({ user }) => {
               </a>
               <div className="mt-2 mb-5 flex items-center justify-between">
                 <p>
-                  <span className="text-xl font-bold text-slate-900">
-                    ${product.price}
-                  </span>
+
+                <span className="text-xl font-bold text-slate-900">
+                  <p className="text-sm text-gray-600 line-through">${product.price}</p> ${product.price - (product.price * 0.10)}
+                </span>
+
+
+                  {/* <span className="text-xl font-bold text-slate-900">
+                  <p className="text-sm text-gray-600 line-through" >$400</p>  ${product.price}
+                  </span> */}
                 </p>
               </div>
               <button

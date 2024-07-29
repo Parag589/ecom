@@ -48,6 +48,7 @@ const createProduct = async (req, res) => {
     }
   };
 
+
 const getSellerProducts = async (req, res) => {
     try {
         const products = await Product.find();

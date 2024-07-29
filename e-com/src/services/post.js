@@ -60,6 +60,44 @@ export const poApi = createApi({
   
 
 
+  export const userApi = createApi({
+    reducerPath: 'userApi',
+    baseQuery: fetchBaseQuery({
+      baseUrl: baseUri,
+      prepareHeaders: (headers) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          headers.set('x-auth-token', token);
+        }
+        return headers;
+      }
+    }),
+    endpoints: (builder) => ({
+      getUserData: builder.query({
+        query: () => ({
+          url: 'user',
+          method: 'GET'
+        })
+      }),
+    }),
+  })
+
+  export const cartApi = createApi({
+    reducerPath: 'cartApi',
+    baseQuery: fetchBaseQuery({ baseUrl: baseUri }),
+    endpoints: (builder) => ({
+      addToCart: builder.mutation({
+        query: (cartData) => ({
+          url: 'addToCart',
+          method: 'POST',
+          body: cartData,
+        }),
+      }),
+      // other endpoints can go here...
+    }),
+  });
+
+
 
   // Export hooks for usage in functional components, which are
   // auto-generated based on the defined endpoints
@@ -67,6 +105,8 @@ export const poApi = createApi({
   export const { useGetHomeDataQuery } = homeApi
   export const { useGetCartItemsQuery } = cartItems
   export const { useGetSellerProductsQuery } = sellerProductsApi;
+  export const { useGetUserDataQuery } = userApi;
+  export const { useAddToCartMutation } = cartApi;
 
 
 

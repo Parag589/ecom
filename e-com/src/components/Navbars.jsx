@@ -4,17 +4,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import { initTWE } from "tw-elements";
 import logo from "./logo.png";
 import { FaCartShopping, FaBoxOpen  } from "react-icons/fa6";
+import { useGetCartItemsQuery } from "../services/post";
+// import { useGetCartQuery } from "../services/post";
 
 
-initTWE(); // Initialize TWE without passing any components
+// initTWE(); // Initialize TWE without passing any components
 
 const Navbars = ({ user, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+console.log(user);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  // const {data, err, isLoading} = useGetCartItemsQuery(user._id)
+  // console.log("CARTredux:",data);
+
+  // useEffect(() => {
+  //   if (loading) {
+  //     setLoading(true);
+  //   } else if (err) {
+  //     setError("Error fetching cart items");
+  //     setLoading(false);
+  //   } else if (data) {
+  //     setCartItems(data.products || []);
+  //     setLoading(false);
+  //   }
+  // }, [data, err, isLoading]);
 
   useEffect(() => {
     if (user) {

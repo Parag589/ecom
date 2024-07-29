@@ -171,11 +171,11 @@ const Seller = () => {
 
 
       {/* -----------------------------------------------Product Form------------------------------ */}
-      <div className="flex flex-col pt-10 items-center w-full h-full bg-gray-300">
+      <div className=" flex flex-col pt-10 items-center w-full h-full bg-gray-300">
         <h1 className="text-2xl mb-10 md:text-3xl pl-2 border-l-4 font-sans font-bold border-teal-400 dark:text-gray-200">
           Manage Products
         </h1>
-        <div className="h-fit w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className=" h-fit w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div>

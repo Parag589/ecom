@@ -80,7 +80,6 @@ const forgotPassword = async (req, res) => {
     const { username, newPassword } = req.body;
   
     try {
-      // Find user by username
       const user = await User.findOne({ username });
   
       if (!user) {

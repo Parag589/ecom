@@ -7,28 +7,44 @@ import Signin from "./components/Signin";
 import Cart from "./components/Cart";
 import Home from "./components/Home";
 import Seller from "./components/Seller";
+import { useGetUserDataQuery } from './services/post';
+
 
 function App() {
   const [user, setUser] = useState(null);
 
+
+  const { data, error, isLoading } = useGetUserDataQuery();
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log("Token:", token); // Debugging log
-    if (token) {
-      axios
-        .get("http://localhost:5000/user", {
-          headers: { "x-auth-token": token },
-        })
-        .then((response) => {
-          console.log("User data:", response.data); // Debugging log
-          setUser(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error); // Debugging log
-          setUser(null);
-        });
+    if (error) {
+      console.error('Error fetching user data:', error); // Debugging log
+    } else if (data) {
+      console.log('User data:', data); // Debugging log
+      setUser(data);
+    }else{
+      setUser(null);
     }
-  }, []);
+  }, [data, error]);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   console.log("Token:", token); // Debugging log
+  //   if (token) {
+  //     axios
+  //       .get("http://localhost:5000/user", {
+  //         headers: { "x-auth-token": token },
+  //       })
+  //       .then((response) => {
+  //         console.log("User data:", response.data); // Debugging log
+  //         setUser(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching user data:", error); // Debugging log
+  //         setUser(null);
+  //       });
+  //   }
+  // }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

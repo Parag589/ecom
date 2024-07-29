@@ -4,10 +4,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes');
 const fileUpload = require('express-fileupload')
+require('dotenv').config();
 
 const app = express();
-const PORT = 5000;
-const dbURI = 'mongodb+srv://paragagarwal0589:parag@ecom.g1z5xel.mongodb.net/?retryWrites=true&w=majority&appName=ecom';
+const PORT = process.env.PORT || 8000;
+const dbURI = process.env.CONNECTION_URL;
 
 // Middleware
 app.use(bodyParser.json());
